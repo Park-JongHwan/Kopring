@@ -21,7 +21,9 @@ class SecurityConfig(
             .httpBasic { it.disable() } // httpBasic off
             .csrf { it.disable() } // csrf off
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) } // session 미사용
-            .authorizeHttpRequests { it.requestMatchers("/api/member/signup", "/api/member/login").anonymous()
+            .authorizeHttpRequests {
+                it.requestMatchers("/api/member/signup", "/api/member/login").anonymous()
+                  .requestMatchers("/api/member/**").hasRole("USER")
                 .anyRequest().permitAll() }
             .addFilterBefore(
                 JwtAuthenticationFilter(jwtTokenProvider),

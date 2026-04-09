@@ -6,12 +6,14 @@ import com.example.demo.common.exception.InvalidInputException
 import com.example.demo.common.status.ROLE
 import com.example.demo.member.dto.LoginDto
 import com.example.demo.member.dto.MemberDtoRequest
+import com.example.demo.member.dto.MemberInfoDto
 import com.example.demo.member.entity.Member
 import com.example.demo.member.entity.MemberRole
 import com.example.demo.member.repository.MemberRepository
 import com.example.demo.member.repository.MemberRoleRepository
 import jakarta.transaction.Transactional
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -50,5 +52,9 @@ class MemberService(
         return jwtTokenProvider.createToken(authentication)
     }
 
+    fun searchMyInfo(id: Long): MemberInfoDto {
+        val member: Member = memberRepository.findByIdOrNull(id) ?: throw InvalidInputException("id", "존재하지 않은 유저입니다.")
+        return member.toDto()
+    }
 
 }
