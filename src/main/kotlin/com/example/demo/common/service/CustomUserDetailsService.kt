@@ -1,5 +1,6 @@
 package com.example.demo.common.service
 
+import com.example.demo.common.dto.CustomUser
 import com.example.demo.member.entity.Member
 import com.example.demo.member.repository.MemberRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -21,7 +22,8 @@ class CustomUserDetailsService(
             ?.let { createUserDetails(it) } ?: throw UsernameNotFoundException("해당 유저는 없습니다.")
 
     private fun createUserDetails(member: Member): UserDetails =
-        User(
+        CustomUser(
+            member.id!!,
             member.loginId,
             member.password,
             member.memberRole!!.map { SimpleGrantedAuthority("ROLE_${it.role}") },
