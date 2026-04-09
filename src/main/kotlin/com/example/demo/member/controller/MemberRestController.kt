@@ -4,8 +4,11 @@ import com.example.demo.common.authority.TokenInfo
 import com.example.demo.common.dto.BaseResponse
 import com.example.demo.member.dto.LoginDto
 import com.example.demo.member.dto.MemberDtoRequest
+import com.example.demo.member.dto.MemberInfoDto
 import com.example.demo.member.service.MemberService
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -26,4 +29,12 @@ class MemberRestController(private val memberService: MemberService) {
         val tokenInfo = memberService.login(loginDto)
         return BaseResponse(data = tokenInfo)
     }
+
+    @GetMapping("/{id}")
+    fun memberInfo(@PathVariable id: Long): BaseResponse<MemberInfoDto> {
+        val searchMyInfo = memberService.searchMyInfo(id)
+        return BaseResponse(data = searchMyInfo)
+    }
+
+
 }
