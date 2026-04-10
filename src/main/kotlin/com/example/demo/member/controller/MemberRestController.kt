@@ -10,6 +10,7 @@ import com.example.demo.member.service.MemberService
 import jakarta.validation.Valid
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -36,6 +37,14 @@ class MemberRestController(private val memberService: MemberService) {
         val userId = (SecurityContextHolder.getContext().authentication?.principal as CustomUser).userId
         val response = memberService.searchMyInfo(userId)
         return BaseResponse(data = response)
+    }
+
+    @PatchMapping
+    fun saveMyInfo(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): BaseResponse<String> {
+        val userId = (SecurityContextHolder.getContext().authentication?.principal as CustomUser).userId
+        memberDtoRequest.id = userId
+        val resultMsg: String = memberService.saveMyInfo(memberDtoRequest)
+        return BaseResponse(message = resultMsg)
     }
 
 
