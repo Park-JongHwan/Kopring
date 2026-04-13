@@ -34,22 +34,15 @@ class Member(
     @Column(nullable = false, length = 30, updatable = false)
     val loginId: String,
 
-    @Column(nullable = false, length = 100)
-    val password: String,
+    password: String,
 
-    @Column(nullable = false, length = 100)
-    val name: String,
+    name: String,
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    val birthday: LocalDate,
+    birthday: LocalDate,
 
-    @Column(nullable = false, length = 5)
-    @Enumerated(EnumType.STRING)
-    val gender: Gender,
+    gender: Gender,
 
-    @Column(nullable = false, length = 30)
-    val email: String,
+    email: String,
 ) {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     val memberRole: List<MemberRole>? = null
@@ -58,7 +51,39 @@ class Member(
         this.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
 
     fun toDto(): MemberInfoDto =
-        MemberInfoDto(id!!, loginId, name, birthday.formatDate(), gender.desc, email)
+        MemberInfoDto(id!!, loginId, name, birthday.formatDate(), gender.name, email)
+
+    @Column(nullable = false, length = 100)
+    var password: String = password
+        protected set
+
+    @Column(nullable = false, length = 100)
+    var name: String = name
+        protected set
+
+    @Column(nullable = false)
+    var birthday: LocalDate = birthday
+        protected set
+
+    @Column(nullable = false, length = 5)
+    @Enumerated(EnumType.STRING)
+    var gender: Gender = gender
+        protected set
+
+    @Column(nullable = false, length = 30)
+    var email: String = email
+        protected set
+
+    fun updatePassword(newPassword: String) {
+        this.password = newPassword
+    }
+
+    fun updateInfo(name: String, birthday: LocalDate, gender: Gender, email: String) {
+        this.name = name
+        this.birthday = birthday
+        this.gender = gender
+        this.email = email
+    }
 }
 
 @Entity

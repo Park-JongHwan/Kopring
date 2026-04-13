@@ -96,3 +96,58 @@ data class MemberInfoDto(
     val gender: String,
     val email: String
 )
+
+data class UpdateMemberDto(
+    @field:NotBlank
+    @JsonProperty("name")
+    private val _name: String?,
+
+    @field:NotBlank
+    @field:Pattern(
+        regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
+        message = "날짜형식(YYYY-MM-DD)을 확인해주세요"
+    )
+    @JsonProperty("birthday")
+    private val _birthday: String?,
+
+    @field:NotBlank
+    @field:ValidEnum(
+        enumClass = Gender::class,
+        message = "MAN 이나 WOMAN 중 하나를 선택해주세요"
+    )
+    @JsonProperty("gender")
+    private val _gender: String?,
+
+    @field:NotBlank
+    @field:Email(message = "이메일 형식을 맞춰주세요")
+    @JsonProperty("email")
+    private val _email: String?
+) {
+    val name: String
+        get() = _name!!
+    val birthday: LocalDate
+        get() = _birthday!!.toLocalDate()
+    val gender: Gender
+        get() = Gender.valueOf(_gender!!)
+    val email: String
+        get() = _email!!
+
+    private fun String.toLocalDate(): LocalDate =
+        LocalDate.parse(this, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+}
+
+data class ChangePasswordDto(
+    @field:NotBlank
+    @JsonProperty("password")
+    private val _password: String?,
+
+    @field:NotBlank
+    @JsonProperty("newPassword")
+    private val _newPassword: String?
+) {
+    val password: String
+        get() = _password!!
+
+    val newPassword: String
+        get() = _newPassword!!
+}

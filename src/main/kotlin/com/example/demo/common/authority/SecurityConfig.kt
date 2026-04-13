@@ -2,6 +2,7 @@ package com.example.demo.common.authority
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -19,6 +20,7 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         return http
             .httpBasic { it.disable() } // httpBasic off
+            .cors(Customizer.withDefaults())
             .csrf { it.disable() } // csrf off
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) } // session 미사용
             .authorizeHttpRequests {
