@@ -5,7 +5,7 @@ import com.example.demo.member.entity.MemberRole
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MemberRepository : JpaRepository<Member, Long> {
-    fun findByLoginId(loginId: String): Member?
+    fun findByLoginId(id: String): Member?
 }
 
 interface MemberRoleRepository : JpaRepository<MemberRole, Long>
