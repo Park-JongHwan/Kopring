@@ -14,3 +14,7 @@ enum class ROLE {
     USER,
     ADMIN
 }
+
+enum class Priority {
+    LOW, MEDIUM, HIGH
+}
